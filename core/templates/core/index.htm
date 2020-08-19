@@ -1,0 +1,35 @@
+<h1>
+    URL Shortener
+</h1>
+<span>Either put in a full url to be shortened or a previously shortened code to be expanded back to its original form.</span>
+<br>
+<span>e.g.: Enter https://google.com/ on the first input and submit it to get a shortened version of it that you can share.</span>
+<br>
+<span>e.g.: "https://shortener.com/_ShortenedCode_  --> Grab just the _ShortenedCode_ and use on the expand url form below.</span>
+<h3>Shorten URL</h3>
+
+<form action="{{ shortner_view_url }}" method="post">
+    <div>
+        {% csrf_token %}
+        <label for="expanded_url">Full URL:</label>
+        <input type="text" id="expanded_url" name="expanded_url" placeholder="The full url to shorten"/>
+        <input type="submit" />
+    </div>
+</form>
+
+<h3>Expand URL</h3>
+<form action="{{ expander_view_url }}" method="post">
+    <div>
+        {% csrf_token %}
+        <label for="nome">Shortened URL:</label>
+        <input type="text" id="shortened_url" name="shortened_url" placeholder="A shortened code"/>
+        <input type="submit" />
+    </div>
+</form>
+
+{% if result %}
+<h3>Result</h3>
+<textarea name="result" cols="60" rows="10">
+    {{ result }}
+</textarea>
+{% endif %}
