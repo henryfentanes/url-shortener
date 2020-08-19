@@ -1,0 +1,38 @@
+version: '2'
+
+volumes:
+  static_files: {}
+  media_files: {}
+
+services:
+  postgres:
+    image: postgres:12.4-alpine
+    command: postgres -c max_connections=100
+    ports:
+      # to avoid conflicts local instances of postgres map to different port;
+      - "5430:5432"
+    environment:
+      - POSTGRES_USER=n3xtm4tt3r
+      - POSTGRES_PASSWORD=localdoesntreallymatter
+      - POSTGRES_DB=localmatter
+      - POSTGRES_PORT=5432
+      - POSTGRES_HOST=postgres
+
+  django:
+    build:
+      context: .
+      dockerfile: ./docker/app/Dockerfile
+    command: /gunicorn.sh
+    volumes:
+      - static_files:/app/staticfiles
+      - media_files:/app/media
+      - .:/app/
+    links:
+      - postgres
+    depends_on:
+      - postgres
+    ports:
+      - "8000:8000"
+    restart: always
+    environment:
+      - SECRET_SAUCE=cowabanga!
