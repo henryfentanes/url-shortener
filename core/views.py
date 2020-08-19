@@ -73,6 +73,11 @@ class RedirectorView(RedirectView):
         if not shortened_code:
             self.url = '/'
         else:
-            obj = ShortenedURL.objects.get(shortened_url=shortened_code)
-            self.url = obj.expanded_url
+            # TODO: Make a custom 404 and show it when shortened_code doesn't
+            #  exist on database
+            # Try and fetch the full_url using the shortened_code provided;
+            # Otherwise, if object doesn't exist, take user to main page
+            obj = ShortenedURL.objects.filter(
+                shortened_url=shortened_code).first()
+            self.url = obj.expanded_url if obj else '/'
         return super().get(request, *args, **kwargs)

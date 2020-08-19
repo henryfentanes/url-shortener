@@ -45,3 +45,8 @@ class TestRedirectShortenedURLToFullURL(TestCase):
         self.assertEqual(301, resp.status_code)
         self.assertEqual(obj.expanded_url, resp.url)
 
+    def test_client_is_taken_to_index_if_shortened_code_doesnt_exist(self):
+        resp = self.client.get('/iDontExist')
+        # Assert client gets permanent redirect
+        self.assertEqual(301, resp.status_code)
+        self.assertEqual('/', resp.url)
