@@ -28,7 +28,7 @@ BASE_DIR = environ.Path(__file__) - 2
 SECRET_KEY = env('SECRET_SAUCE')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG', default=False)
 
 ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=['localhost'])
 
